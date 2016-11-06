@@ -1,10 +1,15 @@
 ﻿@model BabyStore.ViewModels.ProductIndexViewModel
+@using PagedList.Mvc
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Products";
 }
 
 <h2>@ViewBag.Title</h2>
+<p>
+    @(String.IsNullOrWhiteSpace(Model.Search) ? "Showing all" : "You search for " + Model.Search + ", found ")
+    @Model.Products.TotalItemCount products
+</p>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -58,3 +63,16 @@
 }
 
 </table>
+<div>
+    Page @(Model.Products.PageCount < Model.Products.PageNumber ? 0 : Model.Products.PageNumber)
+    of
+    @Model.Products.PageCount
+    @Html.PagedListPager(Model.Products, page => Url.Action("Index",
+        new
+        {
+            category = @Model.Category,
+            Search = Model.Search,
+            sortBy = Model.SortBy,
+            page
+        }))
+</div>
