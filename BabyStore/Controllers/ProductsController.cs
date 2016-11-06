@@ -1,7 +1,7 @@
 ﻿using BabyStore.DAL;
 using BabyStore.Models;
 using BabyStore.ViewModels;
-
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace BabyStore.Controllers
         private StoreContext db = new StoreContext();
 
         // GET: Products
-        public ActionResult Index(string category, string search)
+        public ActionResult Index(string category, string search, string sortBy)
         {
             // Instantiate a new view model
             ProductIndexViewModel viewModel = new ProductIndexViewModel();
@@ -48,7 +48,25 @@ namespace BabyStore.Controllers
                 products = products.Where(p => p.Category.Name == category);
             }
 
+            // Sort the results
+            switch(sortBy)
+            {
+                case "price_lowest":
+                    products = products.OrderBy(p => p.Price);
+                    break;
+                case "price_highest":
+                    products = products.OrderByDescending(p => p.Price);
+                    break;
+                default:
+                    break;
+            }
+
             viewModel.Products = products;
+            viewModel.Sorts = new Dictionary<string, string>
+            {
+                {"Price low to high", "price_lowest" },
+                {"Price how to low", "price_highest" }
+            };
 
             return View(viewModel);
         }
