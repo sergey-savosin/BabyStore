@@ -22,10 +22,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Дом", "Index", "Home")</li>
                     <li>@Html.ActionLink("Категории", "Index", "Categories")</li>
                     <li>@Html.RouteLink("Показать все продукты", "ProductsIndex")</li>
                     <li>@Html.RouteLink("Показать одежду", "ProductsIndex", new { category = "Clothes" })</li>
+                    <li>@Html.ActionLink("Картинки", "Index", "ProductImages")</li>
                 </ul>
                 @using (Html.BeginRouteForm("ProductsIndex", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
                 {
