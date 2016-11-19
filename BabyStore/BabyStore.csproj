@@ -202,6 +202,10 @@
     <Compile Include="Migrations\201611131001592_ProductImages.Designer.cs">
       <DependentUpon>201611131001592_ProductImages.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611190950386_UniqueFileName.cs" />
+    <Compile Include="Migrations\201611190950386_UniqueFileName.Designer.cs">
+      <DependentUpon>201611190950386_UniqueFileName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Category.cs" />
@@ -321,6 +325,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611131001592_ProductImages.resx">
       <DependentUpon>201611131001592_ProductImages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611190950386_UniqueFileName.resx">
+      <DependentUpon>201611190950386_UniqueFileName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

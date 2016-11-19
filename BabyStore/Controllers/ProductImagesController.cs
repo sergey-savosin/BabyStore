@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using BabyStore.DAL;
+using BabyStore.Models;
+using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
-using System.Web.Mvc;
-using BabyStore.DAL;
-using BabyStore.Models;
 using System.Web.Helpers;
+using System.Web.Mvc;
 
 namespace BabyStore.Controllers
 {
@@ -79,7 +79,23 @@ namespace BabyStore.Controllers
             {
                 string fileName = System.IO.Path.GetFileName(file.FileName);
                 db.ProductImages.Add(new ProductImage { FileName = fileName });
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    SqlException innerException = ex.InnerException.InnerException as SqlException;
+                    if (innerException != null && innerException.Number == 2601)
+                    {
+                        ModelState.AddModelError("FileName", "The file " + fileName + " already exists in the system. Please delete it and try again if you wish to re-add it.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("FileName", "Sorry an error has occured: " + ex.ToString());
+                    }
+                    return View();
+                }
                 return RedirectToAction("Index");
             }
 
