@@ -96,8 +96,14 @@ namespace BabyStore.Controllers
         // GET: Products/Create
         public ActionResult Create()
         {
-            ViewBag.CategoryID = new SelectList(db.Categories, "ID", "Name");
-            return View();
+            ProductViewModel viewModel = new ProductViewModel();
+            viewModel.CategoryList = new SelectList(db.Categories, "ID", "Name");
+            viewModel.ImageLists = new List<SelectList>();
+            for (int i = 0; i < Constants.NumberOfProductImages; i++)
+            {
+                viewModel.ImageLists.Add(new SelectList(db.ProductImages, "ID", "FileName"));
+            }
+            return View(viewModel);
         }
 
         // POST: Products/Create
@@ -105,8 +111,29 @@ namespace BabyStore.Controllers
         // сведения см. в статье http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Description,Price,CategoryID")] Product product)
+        public ActionResult Create(ProductViewModel viewModel)
         {
+            Product product = new Product();
+            product.Name = viewModel.Name;
+            product.Description = viewModel.Description;
+            product.Price = viewModel.Price;
+            product.CategoryID = viewModel.CategoryID;
+            product.ProductImageMappings = new List<ProductImageMapping>();
+
+            // Get a list of selected images without any blanks
+            string[] productImages = viewModel.ProductImages
+                .Where(pi => !string.IsNullOrEmpty(pi))
+                .ToArray();
+            for (int i=0; i < productImages.Length; i++)
+            {
+                product.ProductImageMappings.Add(
+                    new ProductImageMapping
+                    {
+                        ProductImage = db.ProductImages.Find(int.Parse(productImages[i])),
+                        ImageNumber = i
+                    });
+            }
+
             if (ModelState.IsValid)
             {
                 db.Products.Add(product);
@@ -114,8 +141,15 @@ namespace BabyStore.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CategoryID = new SelectList(db.Categories, "ID", "Name", product.CategoryID);
-            return View(product);
+            viewModel.CategoryList = new SelectList(db.Categories, "ID", "Name", product.CategoryID);
+            viewModel.ImageLists = new List<SelectList>();
+            for (int i=0; i < Constants.NumberOfProductImages; i++)
+            {
+                SelectList sl = new SelectList(db.ProductImages, "ID", "FileName", viewModel.ProductImages[i]);
+                viewModel.ImageLists.Add(sl);
+            }
+
+            return View(viewModel);
         }
 
         // GET: Products/Edit/5

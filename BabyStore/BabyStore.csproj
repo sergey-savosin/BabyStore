@@ -207,6 +207,10 @@
     <Compile Include="Migrations\201611190950386_UniqueFileName.Designer.cs">
       <DependentUpon>201611190950386_UniqueFileName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611211953321_CreateProductImageMappings.cs" />
+    <Compile Include="Migrations\201611211953321_CreateProductImageMappings.Designer.cs">
+      <DependentUpon>201611211953321_CreateProductImageMappings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Category.cs" />
@@ -214,11 +218,12 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductImage.cs" />
-    <Compile Include="Models\ProductMetaData.cs" />
+    <Compile Include="Models\ProductImageMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Models\CategoryWithCount.cs" />
     <Compile Include="ViewModels\ProductIndexViewModel.cs" />
+    <Compile Include="ViewModels\ProductViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CodeTemplates\ReverseEngineerCodeFirst\Context.tt" />
@@ -331,6 +336,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611190950386_UniqueFileName.resx">
       <DependentUpon>201611190950386_UniqueFileName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611211953321_CreateProductImageMappings.resx">
+      <DependentUpon>201611211953321_CreateProductImageMappings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
