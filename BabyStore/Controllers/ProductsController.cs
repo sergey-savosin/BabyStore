@@ -261,6 +261,7 @@ namespace BabyStore.Controllers
                     if (imageMappingToEdit != null)
                     {
                         // Delete the record from the mapping table directly
+                        //productToUpdate.ProductImageMappings.Remove(imageMappingToEdit);
                         db.ProductImageMappings.Remove(imageMappingToEdit);
                     }
                 }
