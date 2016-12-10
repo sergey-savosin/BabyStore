@@ -2,14 +2,25 @@ namespace BabyStore.Migrations
 {
     using Models;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Data.Entity.Validation;
+    using System.Diagnostics;
+    using System.Globalization;
     using System.Linq;
+    using System.Text;
 
     internal sealed class Configuration : DbMigrationsConfiguration<BabyStore.DAL.StoreContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            // custom CultureInfo for editing decimals in Price fields
+            var newCulture = (CultureInfo)CultureInfo.CreateSpecificCulture("En-us");// .CurrentCulture.Clone();
+            newCulture.NumberFormat.NumberGroupSeparator = "~";
+
+            System.Threading.Thread.CurrentThread.CurrentCulture = newCulture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = newCulture;
         }
 
         protected override void Seed(BabyStore.DAL.StoreContext context)
@@ -76,8 +87,149 @@ namespace BabyStore.Migrations
                     CategoryID = categories.Single(c=>c.Name == "Sleeping").ID }
             };
             products.ForEach(c => context.Products.AddOrUpdate(p => p.Name, c));
+            SaveChanges(context);
 
-            context.SaveChanges();
+
+            var images = new List<ProductImage>
+            {
+                new ProductImage { FileName="SleepSuit1.JPG" },
+                new ProductImage { FileName="SleepSuit2.JPG" },
+                new ProductImage { FileName="Vest1.JPG" },
+                new ProductImage { FileName="Vest2.JPG" },
+                new ProductImage { FileName="Lion1.JPG" },
+                new ProductImage { FileName="Rabbit1.JPG" },
+                new ProductImage { FileName="Bottles1.JPG" },
+                new ProductImage { FileName="Bottles2.JPG" },
+                new ProductImage { FileName="Bottles3.JPG" },
+                new ProductImage { FileName="Bibs1.JPG" },
+                new ProductImage { FileName="Bibs2.JPG" },
+                new ProductImage { FileName="Milk1.JPG" },
+                new ProductImage { FileName="Nappies1.JPG" },
+                new ProductImage { FileName="Nappies2.JPG" },
+                new ProductImage { FileName="Nappies3.JPG" },
+                new ProductImage { FileName="ColicMedicine1.JPG" },
+                new ProductImage { FileName="Reflux1.JPG" },
+                new ProductImage { FileName="Pram1.JPG" },
+                new ProductImage { FileName="Pram2.JPG" },
+                new ProductImage { FileName="Pram3.JPG" },
+                new ProductImage { FileName="CarSeat1.JPG" },
+                new ProductImage { FileName="CarSeat2.JPG" },
+                new ProductImage { FileName="Moses1.JPG" },
+                new ProductImage { FileName="Moses2.JPG" },
+                new ProductImage { FileName="Crib1.JPG" },
+                new ProductImage { FileName="Crib2.JPG" },
+                new ProductImage { FileName="Bed1.JPG" },
+                new ProductImage { FileName="Bed2.JPG" },
+                new ProductImage { FileName="CircusBale1.JPG" },
+                new ProductImage { FileName="CircusBale2.JPG" },
+                new ProductImage { FileName="CircusBale3.JPG" },
+                new ProductImage { FileName="LovedBale1.JPG" },
+            };
+
+            images.ForEach(c => context.ProductImages.AddOrUpdate(p => p.FileName, c));
+            SaveChanges(context);
+
+            var imageMappings = new List<ProductImageMapping>
+            {
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "SleepSuit1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Sleep Suit").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "SleepSuit2.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Sleep Suit").ID, ImageNumber = 1 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Vest1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Vest").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Vest2.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Vest").ID, ImageNumber = 1 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Lion1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Orange and Yellow Lion").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Rabbit1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Blue Rabbit").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Bottles1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "3 Pack of Bottles").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Bottles2.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "3 Pack of Bottles").ID, ImageNumber = 1 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Bottles3.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "3 Pack of Bottles").ID, ImageNumber = 2 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Bibs1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "3 Pack of Bibs").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Bibs2.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "3 Pack of Bibs").ID, ImageNumber = 1 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Milk1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Powdered Baby Milk").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Nappies1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Pack of 70 disposable Nappies").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Nappies2.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Pack of 70 disposable Nappies").ID, ImageNumber = 1 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Nappies3.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Pack of 70 disposable Nappies").ID, ImageNumber = 2 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "ColicMedicine1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Colic Medicine").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Reflux1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Reflux medicine").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Pram1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Black Pram and Pushchair System").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Pram2.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Black Pram and Pushchair System").ID, ImageNumber = 1 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Pram3.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Black Pram and Pushchair System").ID, ImageNumber = 2 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "CarSeat1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Car Seat").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "CarSeat2.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Car Seat").ID, ImageNumber = 1 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Moses1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Moses Basket").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Moses2.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Moses Basket").ID, ImageNumber = 1 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Crib1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Crib").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Crib2.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Crib").ID, ImageNumber = 1 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Bed1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Cot Bed").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "Bed2.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Cot Bed").ID, ImageNumber = 1 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "CircusBale1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Circus Crib Bale").ID, ImageNumber = 0 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "CircusBale2.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Circus Crib Bale").ID, ImageNumber = 1 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "CircusBale3.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Circus Crib Bale").ID, ImageNumber = 2 },
+                new ProductImageMapping { ProductImageID= images.Single(i => i.FileName == "LovedBale1.JPG").ID,
+                    ProductID = products.Single( c=> c.Name == "Loved Crib Bale").ID, ImageNumber = 0 },
+            };
+
+            imageMappings.ForEach(c => context.ProductImageMappings.AddOrUpdate(im => im.ProductImageID, c));
+            SaveChanges(context);
+        }
+
+        /// <summary>
+        /// Wrapper for SaveChanges adding the Validation Messages to the generated exception
+        /// </summary>
+        /// <param name="context">The context.</param>
+        private void SaveChanges(DbContext context)
+        {
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                StringBuilder sb = new StringBuilder();
+
+                foreach (var failure in ex.EntityValidationErrors)
+                {
+                    sb.AppendFormat("{0} failed validation\n", failure.Entry.Entity.GetType());
+                    foreach (var error in failure.ValidationErrors)
+                    {
+                        sb.AppendFormat("- {0} : {1}", error.PropertyName, error.ErrorMessage);
+                        sb.AppendLine();
+                    }
+                }
+
+                throw new DbEntityValidationException(
+                    "Entity Validation Failed - errors follow:\n" +
+                    sb.ToString(), ex
+                ); // Add the original exception as the innerException
+            }
         }
     }
 }

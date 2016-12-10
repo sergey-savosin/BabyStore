@@ -15,7 +15,7 @@ namespace BabyStore.Models
 
         [Required(ErrorMessage = "Описание продукта должно быть заполнено")]
         [StringLength(200, MinimumLength = 10, ErrorMessage = "Описание должно содержать от 10 до 200 символов")]
-        [RegularExpression(@"^[,;a-zA-Z0-9""-'\s]*$", ErrorMessage = "Описание должно состоять из латиницы и цифр")]
+        [RegularExpression(@"^[,;a-zA-Z0-9""-'\-\s]*$", ErrorMessage = "Описание должно состоять из латиницы и цифр")]
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
