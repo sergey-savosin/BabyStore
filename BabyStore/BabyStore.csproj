@@ -389,6 +389,7 @@
     <Content Include="Views\ProductImages\Index.cshtml" />
     <Content Include="Views\Error\FileUploadLimitExceeded.cshtml" />
     <Content Include="Views\Error\DefaultCustomError.cshtml" />
+    <Content Include="Views\Shared\_ProductEditCreatePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
